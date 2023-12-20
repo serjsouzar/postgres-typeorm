@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import { Product } from "./entity/Product";
+import { Store } from "./entity/Store";
 require('dotenv').config();
 
 export const AppDataSource = new DataSource({
@@ -9,7 +10,7 @@ export const AppDataSource = new DataSource({
   username: process.env.PGUSER,
   password: process.env.PGPASSWORD,
   database: 'typeormdb',    
-  entities: [Product],
+  entities: [Product, Store],
   logging: true,
   synchronize: true  
 })

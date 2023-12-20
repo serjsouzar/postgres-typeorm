@@ -1,16 +1,21 @@
 import { Request, Response } from "express";
 import { Product } from "./../entity/Product";
+import { Store } from "./../entity/Store";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { name, description, value } = req.body;
+    const { name, description, value, store } = req.body;
     const product = new Product();
+    const storeInstance = new Store();
 
     product.name = name;
     product.description = description;
     product.value = value;
+    product.store = store
 
     await product.save();
+    storeInstance.product.push(product)
+    await storeInstance.save();
 
     return res.status(201).json(product);
   } catch (error) {

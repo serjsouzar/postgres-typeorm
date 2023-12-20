@@ -1,11 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
-
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn } from "typeorm";
+import { Store } from "./Store";
 @Entity()
 export class Product extends BaseEntity{
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({unique: true})
   name: string;
 
   @Column()
@@ -13,4 +13,8 @@ export class Product extends BaseEntity{
 
   @Column()
   value: number;
+
+  @ManyToOne(() => Store, (store) => store.product)
+  @JoinColumn({ name: 'store', referencedColumnName: 'name' })
+  store: Store
 }
