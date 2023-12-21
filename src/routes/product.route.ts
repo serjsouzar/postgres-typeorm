@@ -4,7 +4,7 @@ import { validationMiddleware, productSchema, productUpdateSchema } from "../sch
 
 const router = Router()
 
-router.post('/products', validationMiddleware(productSchema),createProduct )
+router.post('/products/:storeId', validationMiddleware(productSchema),createProduct )
 router.get('/products', getAllProducts )
 router.get('/products/:id', getProductById )
 router.put('/products/:id',validationMiddleware(productUpdateSchema), updateProduct )

@@ -4,18 +4,25 @@ import { Store } from "./../entity/Store";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { name, description, value, store } = req.body;
-    const product = new Product();
-    const storeInstance = new Store();
+    const { name, description, value } = req.body;
+    const { storeId } = req.params;
 
-    product.name = name;
-    product.description = description;
-    product.value = value;
-    product.store = store
+    const store = await Store.findOne({
+      where: { id: parseInt(storeId) },
+    });
+
+    if (!store) {
+      return res.status(404).json({ message: "Loja não encontrada" });
+    }
+
+    const product = Product.create({
+      name,
+      description,
+      value,
+      store,
+    });
 
     await product.save();
-    storeInstance.product.push(product)
-    await storeInstance.save();
 
     return res.status(201).json(product);
   } catch (error) {
@@ -47,18 +54,18 @@ export const getProductById = async (req: Request, res: Response) => {
   }
 };
 
-export const updateProduct = async (req: Request, res: Response) => {      
-    const { id } = req.params;
-    
-    const product = await Product.findBy({
-      id: parseInt(id),
-    });
+export const updateProduct = async (req: Request, res: Response) => {
+  const { id } = req.params;
 
-    if(!product) return res.send(404).json({message: "Produto não existe"})
+  const product = await Product.findBy({
+    id: parseInt(id),
+  });
 
-    await Product.update({id: parseInt(id)}, req.body)    
+  if (!product) return res.send(404).json({ message: "Produto não existe" });
 
-    return res.status(200).json({message: "Produto atualizado!"});
+  await Product.update({ id: parseInt(id) }, req.body);
+
+  return res.status(200).json({ message: "Produto atualizado!" });
 };
 
 export const deleteProduct = async (req: Request, res: Response) => {
@@ -68,11 +75,11 @@ export const deleteProduct = async (req: Request, res: Response) => {
       id: parseInt(id),
     });
 
-    if(!product) res.send(404).json({message: "Produto não encontrado"})
+    if (!product) res.send(404).json({ message: "Produto não encontrado" });
 
-    await Product.delete({id: parseInt(id)})
+    await Product.delete({ id: parseInt(id) });
 
-    return res.status(200).json({message: "Produto deletado com sucesso!"});
+    return res.status(200).json({ message: "Produto deletado com sucesso!" });
   } catch (error) {
     if (error instanceof Error)
       return res.send(500).json({ message: error.message });

@@ -15,6 +15,6 @@ export class Product extends BaseEntity{
   value: number;
 
   @ManyToOne(() => Store, (store) => store.product)
-  @JoinColumn({ name: 'store', referencedColumnName: 'name' })
+  @JoinColumn({ name: 'store', referencedColumnName: 'id' })
   store: Store
 }
