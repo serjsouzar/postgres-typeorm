@@ -1,21 +1,18 @@
 import Joi from 'joi'
 import { Request, Response, NextFunction } from 'express'
 
-export const productSchema = Joi.object({
+export const storeSchema = Joi.object({
   name: Joi.string().min(3).required(),
-  description: Joi.string().min(5).required(),
-  value: Joi.number().required(), 
-  brand: Joi.string().min(10).required(),
-  is_available: Joi.boolean(), 
+  zip_code: Joi.number().min(8).required(),
+  register_number: Joi.number().min(11).required(), 
+  address: Joi.string().min(5).required(),  
 })
 .options({abortEarly: false})
 
-export const productUpdateSchema = Joi.object({
+export const storeUpdateSchema = Joi.object({
   name: Joi.string().min(3),
-  description: Joi.string().min(5),
-  value: Joi.number(),
-  brand: Joi.string().min(20),
-  is_available: Joi.boolean(), 
+  zip_code: Joi.number().min(8),  
+  address: Joi.string().min(5), 
 })
 .options({abortEarly: false})
 
@@ -32,5 +29,4 @@ export const validationMiddleware = (schema:Joi.ObjectSchema) => {
     }
   }
 }
-
 

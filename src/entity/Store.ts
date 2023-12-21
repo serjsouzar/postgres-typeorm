@@ -9,6 +9,15 @@ export class Store extends BaseEntity{
   @Column({unique: true})
   name: string;
 
+  @Column()
+  zip_code: number;
+
+  @Column({unique: true, type:"bigint", nullable:true})
+  register_number: number
+
+  @Column()
+  address: string
+
   @OneToMany(() => Product, (product:Product) => product.store)  
   product: Product[]
 }

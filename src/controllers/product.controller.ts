@@ -4,8 +4,10 @@ import { Store } from "./../entity/Store";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { name, description, value } = req.body;
+    const { name, description, value, brand, is_available } = req.body;
     const { storeId } = req.params;
+
+    const product = new Product()
 
     const store = await Store.findOne({
       where: { id: parseInt(storeId) },
@@ -14,13 +16,14 @@ export const createProduct = async (req: Request, res: Response) => {
     if (!store) {
       return res.status(404).json({ message: "Loja não encontrada" });
     }
-
-    const product = Product.create({
-      name,
-      description,
-      value,
-      store,
-    });
+    
+      product.name = name,
+      product.description = description,
+      product.value = value,
+      product.store = store,
+      product.brand = brand
+      product.is_available = is_available
+    
 
     await product.save();
 
